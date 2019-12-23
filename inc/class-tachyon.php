@@ -148,8 +148,9 @@ class Tachyon {
 				// Default to resize, though fit may be used in certain cases where a dimension cannot be ascertained
 				$transform = 'resize';
 
-				// Start with a clean attachment ID each time
+				// Start with a clean attachment ID and size each time.
 				$attachment_id = false;
+				unset( $size );
 
 				// Flag if we need to munge a fullsize URL
 				$fullsize_url = false;
@@ -342,6 +343,9 @@ class Tachyon {
 					} elseif ( false !== $height ) {
 						$args['h'] = $height;
 					}
+
+					// Ensure $size is set.
+					$size = isset( $size ) ? $size : 'full';
 
 					/**
 					 * Filter the array of Tachyon arguments added to an image when it goes through Tachyon.
@@ -545,7 +549,7 @@ class Tachyon {
 						// Lets make sure that we don't upscale images since wp never upscales them as well
 						$smaller_width  = ( ( $image_meta['width']  < $image_args['width']  ) ? $image_meta['width']  : $image_args['width']  );
 						$smaller_height = ( ( $image_meta['height'] < $image_args['height'] ) ? $image_meta['height'] : $image_args['height'] );
-						
+
 						// Reset $image_meta dimensions to resized values.
 						$image_meta['width']  = $smaller_width;
 						$image_meta['height'] = $smaller_height;
